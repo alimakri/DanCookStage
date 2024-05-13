@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DanCook.Commun\DanCook.Commun.csproj" />
+    <ProjectReference Include="..\DanCook.Donnees\DanCook.Donnees.csproj" />
+  </ItemGroup>
+
 </Project>
