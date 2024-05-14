@@ -5,15 +5,15 @@ namespace DanCook.Metier
 {
     public static class Moteur
     {
-        public static void Execute()
+        public static void Execute(CommandLine cmd)
         {
-            if(CommandLine.Command == "Get-Product")
+            if(cmd.Command == "Get-Product")
             {
-                Data.Execute();
+                Data.Execute(cmd);
             }
             else 
             {
-                Console.WriteLine("Exécution de la commande (Métier) {0}", CommandLine.Command);
+                Console.WriteLine("Exécution de la commande (Métier) {0}", cmd.Command);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿namespace DanCook.Commun
 {
-    public static class CommandLine
+    public class CommandLine
     {
-        public static string Command;
+        public string Command;
     }
 }
