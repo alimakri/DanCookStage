@@ -7,7 +7,7 @@ namespace DanCook.Metier
     {
         public static int Execute(CommandLine cmd)
         {
-            if (!CommandLine.Commands.Contains(cmd.Command))
+            if (!cmd.Exists())
                 return -1;
             if(cmd.Command == "Get-Product")
             {
