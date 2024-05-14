@@ -2,7 +2,7 @@
 using DanCook.Metier;
 
 CommandLine.Init();
-Console.Write("Dancook> ");
+Console.Write("Dancook> "); 
 string saisie = Console.ReadLine();
 
 Console.WriteLine("Vous avez tapé {0}", saisie);
