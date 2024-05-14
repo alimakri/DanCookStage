@@ -2,6 +2,6 @@
 {
     public class CommandLine
     {
-        public string Command;
+        public string Command; 
     }
 }
