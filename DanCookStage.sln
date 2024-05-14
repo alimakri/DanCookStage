@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34601.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DanCook.Interface", "DanCook.Interface\DanCook.Interface.csproj", "{9E8D9462-CFB8-4641-A83E-F3670DC84798}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DanCook.Interface", "DanCook.Interface\DanCook.Interface.csproj", "{9E8D9462-CFB8-4641-A83E-F3670DC84798}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DanCook.Metier", "DanCook.Metier\DanCook.Metier.csproj", "{CB6970EE-2D40-456E-9D16-D5B336059D74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DanCook.Metier", "DanCook.Metier\DanCook.Metier.csproj", "{CB6970EE-2D40-456E-9D16-D5B336059D74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DanCook.Donnees", "DanCook.Donnees\DanCook.Donnees.csproj", "{3EE0B291-46EF-40E4-A0F2-DEE367D8F8D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DanCook.Donnees", "DanCook.Donnees\DanCook.Donnees.csproj", "{3EE0B291-46EF-40E4-A0F2-DEE367D8F8D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DanCook.Commun", "DanCook.Commun\DanCook.Commun.csproj", "{E034C11F-A058-4892-868A-BF11765F8F27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DanCook.Commun", "DanCook.Commun\DanCook.Commun.csproj", "{E034C11F-A058-4892-868A-BF11765F8F27}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Principal", "Principal", "{D609F9CB-B9D7-4046-8C26-FF2446EEA6F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cours", "Cours", "{403CBDBD-D89C-4491-8B34-2A0EC9547BF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1_Static", "1_Static\1_Static.csproj", "{E742AE30-1937-40F7-B459-5C3D70D600E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +39,20 @@ Global
 		{E034C11F-A058-4892-868A-BF11765F8F27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E034C11F-A058-4892-868A-BF11765F8F27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E034C11F-A058-4892-868A-BF11765F8F27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E742AE30-1937-40F7-B459-5C3D70D600E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E742AE30-1937-40F7-B459-5C3D70D600E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E742AE30-1937-40F7-B459-5C3D70D600E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E742AE30-1937-40F7-B459-5C3D70D600E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9E8D9462-CFB8-4641-A83E-F3670DC84798} = {D609F9CB-B9D7-4046-8C26-FF2446EEA6F4}
+		{CB6970EE-2D40-456E-9D16-D5B336059D74} = {D609F9CB-B9D7-4046-8C26-FF2446EEA6F4}
+		{3EE0B291-46EF-40E4-A0F2-DEE367D8F8D5} = {D609F9CB-B9D7-4046-8C26-FF2446EEA6F4}
+		{E034C11F-A058-4892-868A-BF11765F8F27} = {D609F9CB-B9D7-4046-8C26-FF2446EEA6F4}
+		{E742AE30-1937-40F7-B459-5C3D70D600E6} = {403CBDBD-D89C-4491-8B34-2A0EC9547BF5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5AD59A8-7B87-4C7D-9722-B914D9D4046B}
