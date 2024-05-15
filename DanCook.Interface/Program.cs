@@ -6,7 +6,7 @@ while (!fin)
 {
     Console.Write("Dancook> ");
     string saisie = Console.ReadLine();
-
+     
     if (saisie.ToLower() == "exit")
     {
         fin = true;
