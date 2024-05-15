@@ -7,15 +7,10 @@ namespace DanCook.Metier
     {
         public static int Execute(CommandLine cmd)
         {
-            if (!cmd.Exists())
-                return -1;
-            if(cmd.Command == "Get-Product")
+            if (cmd.Label == CommandEnum.None) return -1;
+            if(cmd.Label == CommandEnum.Get_Product)
             {
-                Data.Execute(cmd);
-            }
-            else 
-            {
-                Console.WriteLine("Exécution de la commande (Métier) {0}", cmd.Command);
+                return Data.Execute(cmd);
             }
             return 0;
         }

@@ -4,9 +4,9 @@ namespace DanCook.Donnees
 {
     public static class Data
     {
-        public static void Execute(CommandLine cmd)
+        public static int Execute(CommandLine cmd)
         {
-            Console.WriteLine("Exécution de la commande (Données) {0}", cmd.Command);
+            return 0;
         }
     }
 }
