@@ -23,7 +23,8 @@ while (!fin)
                 Console.WriteLine("Cette commande n'existe pas");
                 break;
             case 0:
-                Console.WriteLine("Exécution de la commande {0}", cmd1.Label); break;
+                Console.WriteLine("Exécution de la commande {0}", cmd1.Label); 
+                break;
         }
     }
     Console.ReadLine();
