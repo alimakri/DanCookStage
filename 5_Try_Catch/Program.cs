@@ -44,6 +44,7 @@ catch (Exception ex)
     // Affiche les détails de l'exception (facultatif)
     Console.WriteLine("Détails de l'exception: " + ex.Message);
 }
+
 // Le bloc finally contient du code qui sera exécuté qu'une exception soit levée ou non
 finally
 {
