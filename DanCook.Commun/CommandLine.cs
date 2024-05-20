@@ -1,5 +1,4 @@
-﻿
-namespace DanCook.Commun
+﻿namespace DanCook.Commun
 {
     // Classe représentant une ligne de commande
     public class CommandLine
@@ -19,6 +18,6 @@ namespace DanCook.Commun
     // Enumération des commandes
     public enum CommandEnum
     {
-        None, Get_Product, Get_Category, Get_Cart
+        None, Get_Product, Get_Category, Get_Cart, Get_Product_By_Category
     }
 }

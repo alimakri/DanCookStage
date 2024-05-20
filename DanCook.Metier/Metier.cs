@@ -12,12 +12,8 @@ namespace DanCook.Metier
             // Vérifie si la commande est None
             if (cmd.Label == CommandEnum.None) return -1;
 
-            // Exécute la commande Get_Product
-            if (cmd.Label == CommandEnum.Get_Product)
-            {
-                return Data.Execute(cmd);
-            }
-            return 0;
+            // Exécute la commande en fonction de la commande saisie
+            return Data.Execute(cmd);
         }
     }
 }
