@@ -10,6 +10,7 @@
         // Constructeur qui initialise la commande en fonction de ce que l'utilisateur saisie
         public CommandLine(string saisie)
         {
+            Input = saisie;
             var s = saisie.Replace("-", "_");
             Enum.TryParse(s, out Label);
         }
@@ -18,6 +19,6 @@
     // Enumération des commandes
     public enum CommandEnum
     {
-        None, Get_Product, Get_Category, Get_Cart, Get_Product_By_Category
+        None, Get_Product, Get_Category, Get_Cart
     }
 }

@@ -24,9 +24,20 @@ namespace DanCook.Donnees
             {
                 case CommandEnum.Get_Product:
                     sqlCmd.CommandText = "select ProductID, Name, ListPrice from Production.Product";
-                    break;
-                case CommandEnum.Get_Product_By_Category:
-                    sqlCmd.CommandText = "select ProductID, Name, ListPrice from Production.Product where ProductCategoryID = 1";
+
+                    sqlCmd.CommandText = @"select 
+	                                            p.ProductID, 
+	                                            p.Name produit, 
+	                                            p.ListPrice, 
+	                                            p.ProductSubcategoryID, 
+	                                            sc.Name souscat,
+	                                            sc.ProductCategoryID,
+	                                            c.Name cat
+                                            from Production.Product p
+                                            inner join Production.ProductSubcategory sc on p.ProductSubcategoryID = sc.ProductSubcategoryID
+                                            inner join Production.ProductCategory c on sc.ProductCategoryID=c.ProductCategoryID
+                                            where c.ProductCategoryID = 1
+                                            order by ProductSubcategoryID";
                     break;
                 default:
                     return -1;
