@@ -15,7 +15,7 @@ class program
         Regex assigneRegex = new Regex(@"(\w+)\s*=\s*(.*)");
 
         //Faire un Regex pour capturer les expressions avec les opérations
-        Regex expressionRegex = new Regex(@"(\w+) \s* ([+ \ - * \ / ]) \s* (\w+)");
+        Regex expressionRegex = new Regex(@"(\w+)\s*([\+\-\*\/])\s*(\w+)");
 
         Console.WriteLine("Entrez vos expresssions(tapez exit pour sortir)");
 
@@ -94,7 +94,6 @@ class program
                 "/" => leftValue / rightValue,
                 _ => throw new InvalidOperationException("Opération invalide"),
             };
-
         }
 
         //Si l'expression est invalide, On lève une exception 
