@@ -23,11 +23,10 @@ namespace DanCook.Donnees
             switch (cmd.Label)
             {
                 case CommandEnum.Get_Product:
-                    sqlCmd.CommandText = "select ProductID, Name, ListPrice from Production.Product";
 
                     sqlCmd.CommandText = @"select 
 	                                            p.ProductID, 
-	                                            p.Name produit, 
+	                                            p.Name, 
 	                                            p.ListPrice, 
 	                                            p.ProductSubcategoryID, 
 	                                            sc.Name souscat,
@@ -35,9 +34,18 @@ namespace DanCook.Donnees
 	                                            c.Name cat
                                             from Production.Product p
                                             inner join Production.ProductSubcategory sc on p.ProductSubcategoryID = sc.ProductSubcategoryID
-                                            inner join Production.ProductCategory c on sc.ProductCategoryID=c.ProductCategoryID
-                                            where c.ProductCategoryID = 1
-                                            order by ProductSubcategoryID";
+                                            inner join Production.ProductCategory c on sc.ProductCategoryID=c.ProductCategoryID";
+
+                    if (cmd.Parameters.ContainsKey("Category"))
+                    {
+                        sqlCmd.CommandText += $" where c.ProductCategoryID = {cmd.Parameters["Category"]}";
+                    }
+
+                    // Ajoute un ordre de tri 
+                    if (cmd.Parameters.ContainsKey("OrderBy"))
+                    {
+                        sqlCmd.CommandText += $" order by p.{cmd.Parameters["OrderBy"]}";
+                    }
                     break;
                 default:
                     return -1;
