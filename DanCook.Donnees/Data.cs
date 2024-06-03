@@ -47,24 +47,54 @@ namespace DanCook.Donnees
                         sqlCmd.CommandText += $" order by p.{cmd.Parameters["OrderBy"]}";
                     }
                     break;
+
+                case CommandEnum.Get_Category:
+                    sqlCmd.CommandText = @"Select
+                                                c.ProductCategoryID
+                                                c.Name 
+                                              From Production.ProductCategory c";
+
+                    // Ajoute un ordre de tri 
+                    if (cmd.Parameters.ContainsKey("OrderBy"))
+                    {
+                        sqlCmd.CommandText += $" order by c.{cmd.Parameters["OrderBy"]}";
+                    }
+
+                    break;
+
                 default:
                     return -1;
             }
 
             // Exécute la commande et lit les résultats
-            SqlDataReader rd = sqlCmd.ExecuteReader();
-
-            while (rd.Read())
+            SqlDataReader rd = null;
+            try
             {
-                // Création d'une nouvelle ligne de résultats
-                var ligne = new List<string>
+                rd = sqlCmd.ExecuteReader();
+                while (rd.Read())
                 {
-                    rd["ProductID"].ToString(),
-                    rd["Name"].ToString(),
-                    rd["ListPrice"].ToString()
-                };
-                // Ajoute la ligne aux résultats de la commande
-                cmd.Result.Add(ligne);
+                    // Création d'une nouvelle ligne de résultats
+                    var ligne = new List<string>();
+                    if(cmd.Label == CommandEnum.Get_Product)
+                    {
+                        ligne.Add(rd["ProductID"].ToString());
+                        ligne.Add(rd["Name"].ToString());
+                        ligne.Add(rd["ListPrice"].ToString());
+                    }
+                    else if (cmd.Label == CommandEnum.Get_Category)
+                    {
+                        ligne.Add(rd["ProductCategoryID"].ToString());
+                        ligne.Add(rd["Name"].ToString());
+                    }
+
+                    // Ajoute la ligne aux résultats de la commande
+                    cmd.Result.Add(ligne);
+                }
+
+            }
+            catch (Exception)
+            {
+                return -2;
             }
 
             // Ferme le DataReader

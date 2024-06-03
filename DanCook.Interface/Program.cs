@@ -26,10 +26,22 @@ while (!fin)
         switch (result)
         {
             case -1:
+                //Change la couleur du texte en rouge
+                Console.ForegroundColor = ConsoleColor.Red;
                 // Affiche un message si la commande n'existe pas
                 Console.WriteLine("Cette commande n'existe pas");
+                Console.ResetColor();
+                break;
+            case -2:
+                //Change la couleur du texte en rouge
+                Console.ForegroundColor = ConsoleColor.Red;
+                // Affiche un message si la commande n'existe pas
+                Console.WriteLine("Cette commande est mal écrite");
+                Console.ResetColor();
                 break;
             case 0:
+                //Change la couleur du texte en rouge
+                Console.ForegroundColor = ConsoleColor.Green;
                 // Affiche un message et les résultats de la commande
                 Console.WriteLine("Exécution de la commande {0}", cmd1.Label);
                 foreach (var ligne in cmd1.Result)
@@ -37,9 +49,9 @@ while (!fin)
                     // Affiche chaque ligne de résultats
                     Console.WriteLine(string.Join("\t", ligne));
                 }
+                Console.ResetColor();
                 break;
+
         }
     }
-    // Attendre ce que l'utilisateur saisi avant de continuer
-    Console.ReadLine();
 }
