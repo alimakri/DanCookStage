@@ -34,7 +34,7 @@ namespace DanCook.Donnees
 	                                            c.Name cat
                                             from Production.Product p
                                             inner join Production.ProductSubcategory sc on p.ProductSubcategoryID = sc.ProductSubcategoryID
-                                            inner join Production.ProductCategory c on sc.ProductCategoryID=c.ProductCategoryID";
+                                            inner join Production.ProductCategory c on sc.ProductCategoryID = c.ProductCategoryID";
 
                     if (cmd.Parameters.ContainsKey("Category"))
                     {
@@ -50,7 +50,7 @@ namespace DanCook.Donnees
 
                 case CommandEnum.Get_Category:
                     sqlCmd.CommandText = @"Select
-                                                c.ProductCategoryID
+                                                c.ProductCategoryID,
                                                 c.Name 
                                               From Production.ProductCategory c";
 
@@ -60,7 +60,18 @@ namespace DanCook.Donnees
                         sqlCmd.CommandText += $" order by c.{cmd.Parameters["OrderBy"]}";
                     }
 
-                    break;
+                break;
+
+                case CommandEnum.Add_Cart:
+                    // La commande SQL pour ajouter un produit au panier
+                    sqlCmd.CommandText = @"Insert into Cart (CartID, ProductID, Quantity)
+                                           values (@Id, @Product, @Quantity";
+
+                    // On ajoute les paramètres nécessaires
+                    sqlCmd.Parameters.AddValue("@Id", cmd.Parameters["Id"]);
+                    sqlCmd.Parameters.AddValue("@Product", cmd.Parameters["Product"]);
+                    sqlCmd.Parameters.AddValue("@Quantity", cmd.Parameters["Quantity"]);
+                break;
 
                 default:
                     return -1;

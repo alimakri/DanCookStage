@@ -43,6 +43,6 @@
     // Enumération des commandes
     public enum CommandEnum
     {
-        None, Get_Product, Get_Category, Get_Cart
+        None, Get_Product, Get_Category, Add_Cart, Get_Cart
     }
 }
