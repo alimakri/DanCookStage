@@ -51,7 +51,11 @@ while (!fin)
                 }
                 Console.ResetColor();
                 break;
-
+            default:
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Nombre d'enregistrements : {0}", result);
+                Console.ResetColor();
+                break;
         }
     }
 }
