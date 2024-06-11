@@ -36,7 +36,7 @@ while (!fin)
                 //Change la couleur du texte en rouge
                 Console.ForegroundColor = ConsoleColor.Red;
                 // Affiche un message si la commande n'existe pas
-                Console.WriteLine("Cette commande est mal écrite");
+                Console.WriteLine("Cette commande est male écrite");
                 Console.ResetColor();
                 break;
             case 0:

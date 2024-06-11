@@ -14,7 +14,7 @@ namespace DanCook.Donnees
 
             // Crée et ouvre une connexion SQL
             var cnx = new SqlConnection();
-            cnx.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks2017;Integrated Security=True;Encrypt=False";
+            cnx.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=DanCookStage;Integrated Security=True;Encrypt=False";
             cnx.Open();
 
             SqlCommand sqlCmd = new SqlCommand();
@@ -26,21 +26,23 @@ namespace DanCook.Donnees
             {
                 case CommandEnum.Get_Product:
 
-                    sqlCmd.CommandText = @"select 
-	                                            p.ProductID, 
-	                                            p.Name, 
-	                                            p.ListPrice, 
-	                                            p.ProductSubcategoryID, 
-	                                            sc.Name souscat,
-	                                            sc.ProductCategoryID,
-	                                            c.Name cat
-                                            from Production.Product p
-                                            inner join Production.ProductSubcategory sc on p.ProductSubcategoryID = sc.ProductSubcategoryID
-                                            inner join Production.ProductCategory c on sc.ProductCategoryID = c.ProductCategoryID";
+                    sqlCmd.CommandText = @"SELECT 
+                                            p.Id,
+                                            p.Name,
+                                            p.ListPrice,
+                                            p.SubCategory,
+                                            sc.Name AS SubCategoryName,
+                                            c.Name AS CategoryName
+                                        FROM 
+                                            dbo.Product p
+                                        INNER JOIN 
+                                            dbo.SubCategory sc ON p.SubCategory = sc.Id
+                                        INNER JOIN 
+                                            dbo.Category c ON p.Category = c.Id";
 
                     if (cmd.Parameters.ContainsKey("Category"))
                     {
-                        sqlCmd.CommandText += $" where c.ProductCategoryID = {cmd.Parameters["Category"]}";
+                        sqlCmd.CommandText += $" where c.Category = {cmd.Parameters["Category"]}";
                     }
 
                     // Ajoute un ordre de tri 
@@ -53,9 +55,8 @@ namespace DanCook.Donnees
 
                 case CommandEnum.Get_Category:
                     sqlCmd.CommandText = @"Select
-                                                c.ProductCategoryID,
-                                                c.Name 
-                                              From Production.ProductCategory c";
+                                            c.Id, c.Name 
+                                            From Category c";
 
                     // Ajoute un ordre de tri 
                     if (cmd.Parameters.ContainsKey("OrderBy"))
@@ -64,18 +65,54 @@ namespace DanCook.Donnees
                     }
                     lecture = true;
 
-                    break;
+                break;
 
                 case CommandEnum.Add_Cart:
-                    // La commande SQL pour ajouter un produit au panier
-                    sqlCmd.CommandText = $@"Insert into Cart (CartID, ProductID, Quantity)
-                                           values ({cmd.Parameters["Id"]}, {cmd.Parameters["Product"]}, {cmd.Parameters["Quantity"]})";
+                    if (cmd.Parameters.ContainsKey("Id") && cmd.Parameters.ContainsKey("Product") && cmd.Parameters.ContainsKey("Quantity"))
+                    {
+                        // La commande SQL pour ajouter un produit au panier
+                        sqlCmd.CommandText = $@"INSERT INTO CartProduct (Cart, Product, Quantity)
+                                                VALUES ({cmd.Parameters["Id"]}, {cmd.Parameters["Product"]}, {cmd.Parameters["Quantity"]})";
 
-                    lecture = false;
+                        lecture = false;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+
                     break;
+
+                case CommandEnum.Get_Cart:
+                    sqlCmd.CommandText = @"SELECT 
+                                            cp.Cart AS PanierNumero,
+                                            p.Name AS NomProduit,
+                                            cp.Price AS Prix,
+                                            cp.Quantity AS Quantite
+                                           FROM 
+                                            dbo.CartProduct cp
+                                           INNER JOIN 
+                                            dbo.Product p ON cp.Product = p.Id
+                                           INNER JOIN 
+                                            dbo.Cart c ON cp.Cart = c.Id";
+
+                    // Ajoute un filtre pour Cart si nécessaire
+                    if (cmd.Parameters.ContainsKey("Cart"))
+                    {
+                        sqlCmd.CommandText += $" WHERE cp.Cart = {cmd.Parameters["Cart"]}";
+                    }
+
+                    // Ajoute un ordre de tri 
+                    if (cmd.Parameters.ContainsKey("OrderBy"))
+                    {
+                        sqlCmd.CommandText += $" ORDER BY cp.{cmd.Parameters["OrderBy"]}";
+                    }
+                    lecture = true;
+                break;
 
                 default:
                     return -1;
+
             }
 
             if (lecture)
@@ -91,14 +128,23 @@ namespace DanCook.Donnees
                         var ligne = new List<string>();
                         if (cmd.Label == CommandEnum.Get_Product)
                         {
-                            ligne.Add(rd["ProductID"].ToString());
+                            ligne.Add(rd["Id"].ToString());
                             ligne.Add(rd["Name"].ToString());
                             ligne.Add(rd["ListPrice"].ToString());
+                            ligne.Add(rd["SubCategoryName"].ToString());
+                            ligne.Add(rd["CategoryName"].ToString());
                         }
                         else if (cmd.Label == CommandEnum.Get_Category)
                         {
-                            ligne.Add(rd["ProductCategoryID"].ToString());
+                            ligne.Add(rd["Id"].ToString());
                             ligne.Add(rd["Name"].ToString());
+                        }
+                        else if (cmd.Label == CommandEnum.Get_Cart)
+                        {
+                            ligne.Add(rd["PanierNumero"].ToString());
+                            ligne.Add(rd["NomProduit"].ToString());
+                            ligne.Add(rd["Prix"].ToString());
+                            ligne.Add(rd["Quantite"].ToString());
                         }
 
                         // Ajoute la ligne aux résultats de la commande
