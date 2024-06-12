@@ -1,4 +1,6 @@
-﻿namespace DanCook.Commun
+﻿using System.Reflection.Metadata;
+
+namespace DanCook.Commun
 {
     // Classe représentant une ligne de commande
     public class CommandLine
@@ -19,7 +21,7 @@
         private void ParseInput(string saisie)
         {
             // Expression régulière pour capturer la commande et ses arguments
-            var regex = new System.Text.RegularExpressions.Regex(@"(?<command>\w+-\w+)(?:\s+-\s*(?<parameter>\w+)\s+""(?<value>[^""]*)"")*");
+            var regex = new System.Text.RegularExpressions.Regex(@"(?<command>\w+-\w+)(?:\s+-\s*(?<parameter>\w+)\s+(?:""(?<value>[^""]*)""|(?<value>\S+)))*");
             var match = regex.Match(saisie);
 
             if (match.Success)

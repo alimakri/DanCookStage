@@ -158,4 +158,24 @@ INNER JOIN
 INNER JOIN 
     dbo.Cart c ON cp.Cart = c.Id;
 
+
+	SELECT 
+    p.Id AS ProductId,
+    p.Name AS ProductName,
+    p.ListPrice,
+    p.SubCategory AS SubCategoryId,
+    sc.Name AS SubCategoryName,
+    c.Name AS CategoryName
+FROM 
+    dbo.Product p
+INNER JOIN 
+    dbo.SubCategory sc ON p.SubCategory = sc.Id
+INNER JOIN 
+    dbo.Category c ON p.Category = c.Id;
+GO
+
+Select
+c.Id, c.Name 
+From Category c;
+
 Use master	

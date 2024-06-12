@@ -42,7 +42,7 @@ namespace DanCook.Donnees
 
                     if (cmd.Parameters.ContainsKey("Category"))
                     {
-                        sqlCmd.CommandText += $" where c.Category = {cmd.Parameters["Category"]}";
+                        sqlCmd.CommandText += $" where c.Id = {cmd.Parameters["Category"]}";
                     }
 
                     // Ajoute un ordre de tri 
@@ -71,8 +71,8 @@ namespace DanCook.Donnees
                     if (cmd.Parameters.ContainsKey("Id") && cmd.Parameters.ContainsKey("Product") && cmd.Parameters.ContainsKey("Quantity"))
                     {
                         // La commande SQL pour ajouter un produit au panier
-                        sqlCmd.CommandText = $@"INSERT INTO CartProduct (Cart, Product, Quantity)
-                                                VALUES ({cmd.Parameters["Id"]}, {cmd.Parameters["Product"]}, {cmd.Parameters["Quantity"]})";
+                        sqlCmd.CommandText = $@"INSERT INTO CartProduct (Cart, Product, Price, Quantity)
+                                                VALUES ({cmd.Parameters["Id"]}, {cmd.Parameters["Product"]}, {cmd.Parameters["Price"]}, {cmd.Parameters["Quantity"]})";
 
                         lecture = false;
                     }
@@ -96,7 +96,6 @@ namespace DanCook.Donnees
                                            INNER JOIN 
                                             dbo.Cart c ON cp.Cart = c.Id";
 
-                    // Ajoute un filtre pour Cart si nécessaire
                     if (cmd.Parameters.ContainsKey("Cart"))
                     {
                         sqlCmd.CommandText += $" WHERE cp.Cart = {cmd.Parameters["Cart"]}";
