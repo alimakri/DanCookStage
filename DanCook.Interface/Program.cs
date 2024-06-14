@@ -2,6 +2,7 @@
 using DanCook.Metier;
 
 bool fin = false;
+
 while (!fin)
 {
     // Demande à l'utilisateur de saisir une commande

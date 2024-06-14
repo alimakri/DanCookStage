@@ -1,6 +1,7 @@
 ﻿using DanCook.Commun;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Linq.Expressions;
 
 namespace DanCook.Donnees
 {
@@ -18,6 +19,7 @@ namespace DanCook.Donnees
             cnx.Open();
 
             SqlCommand sqlCmd = new SqlCommand();
+            SqlDataReader rd = null;
             sqlCmd.Connection = cnx;
             sqlCmd.CommandType = CommandType.Text;
 
@@ -65,49 +67,82 @@ namespace DanCook.Donnees
                     }
                     lecture = true;
 
-                break;
+                    break;
 
                 case CommandEnum.Add_Cart:
+                    //Add-Cart -Id 5 -Product 1 -Quantity 3 -Price 17
                     if (cmd.Parameters.ContainsKey("Id") && cmd.Parameters.ContainsKey("Product") && cmd.Parameters.ContainsKey("Quantity"))
                     {
-                        // La commande SQL pour ajouter un produit au panier
-                        sqlCmd.CommandText = $@"INSERT INTO CartProduct (Cart, Product, Price, Quantity)
-                                                VALUES ({cmd.Parameters["Id"]}, {cmd.Parameters["Product"]}, {cmd.Parameters["Price"]}, {cmd.Parameters["Quantity"]})";
+                        sqlCmd.CommandText = $@"Select Id from Cart where id = {cmd.Parameters["Id"]}";
+                        try
+                        {
+                            rd = sqlCmd.ExecuteReader();
+                            if (!rd.Read())
+                            {
+                                rd.Close();
+                                // La commande SQL pour ajouter un nouveau panier
+                                sqlCmd.CommandText = $@"INSERT INTO Cart (Id, DateCommande)
+                                                VALUES ({cmd.Parameters["Id"]}, GETDATE());";
 
-                        lecture = false;
+                                sqlCmd.ExecuteNonQuery();
+                            }
+                            // La commande SQL pour ajouter un produit au panier
+                            sqlCmd.CommandText = $@"INSERT INTO CartProduct (Cart, Product, Price, Quantity)
+                                                VALUES ({cmd.Parameters["Id"]}, {cmd.Parameters["Product"]}, {cmd.Parameters["Price"]}, {cmd.Parameters["Quantity"]})";
+                            sqlCmd.ExecuteNonQuery();
+
+                            sqlCmd.CommandText = $@"Select Id from Cart where id = {cmd.Parameters["Id"]}";
+                            lecture = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            lecture = false;
+                        }
                     }
                     else
                     {
                         return -1;
                     }
-
                     break;
-
                 case CommandEnum.Get_Cart:
-                    sqlCmd.CommandText = @"SELECT 
-                                            cp.Cart AS PanierNumero,
-                                            p.Name AS NomProduit,
-                                            cp.Price AS Prix,
-                                            cp.Quantity AS Quantite
-                                           FROM 
-                                            dbo.CartProduct cp
-                                           INNER JOIN 
-                                            dbo.Product p ON cp.Product = p.Id
-                                           INNER JOIN 
-                                            dbo.Cart c ON cp.Cart = c.Id";
-
-                    if (cmd.Parameters.ContainsKey("Cart"))
+                    if (cmd.Parameters.ContainsKey("Id"))
                     {
-                        sqlCmd.CommandText += $" WHERE cp.Cart = {cmd.Parameters["Cart"]}";
-                    }
+                        int cartId = int.Parse(cmd.Parameters["Id"]);
+                        if (cmd.Parameters.ContainsKey("Option") && cmd.Parameters["Option"].ToLower() == "total")
+                        {
+                            sqlCmd.CommandText = $@"SELECT SUM(cp.Price * cp.Quantity) AS Total
+                                                    FROM CartProduct cp
+                                                    WHERE cp.Cart = {cartId}";
+                        }
+                        else
+                        {
+                            sqlCmd.CommandText = $@"SELECT 
+                                                    cp.Cart AS PanierNumero,
+                                                    p.Name AS NomProduit,
+                                                    cp.Price AS Prix,
+                                                    cp.Quantity AS Quantite
+                                                FROM 
+                                                    dbo.CartProduct cp
+                                                INNER JOIN 
+                                                    dbo.Product p ON cp.Product = p.Id
+                                                INNER JOIN 
+                                                    dbo.Cart c ON cp.Cart = c.Id
+                                                WHERE 
+                                                    cp.Cart = {cartId}";
 
-                    // Ajoute un ordre de tri 
-                    if (cmd.Parameters.ContainsKey("OrderBy"))
-                    {
-                        sqlCmd.CommandText += $" ORDER BY cp.{cmd.Parameters["OrderBy"]}";
+                            // Ajoute un ordre de tri 
+                            if (cmd.Parameters.ContainsKey("OrderBy"))
+                            {
+                                sqlCmd.CommandText += $" ORDER BY cp.{cmd.Parameters["OrderBy"]}";
+                            }
+                        }
+                        lecture = true;
                     }
-                    lecture = true;
-                break;
+                    else
+                    {
+                        return -1; // Paramètre Id manquant
+                    }
+                    break;
 
                 default:
                     return -1;
@@ -117,7 +152,6 @@ namespace DanCook.Donnees
             if (lecture)
             {
                 // Exécute la commande et lit les résultats
-                SqlDataReader rd = null;
                 try
                 {
                     rd = sqlCmd.ExecuteReader();
@@ -125,27 +159,39 @@ namespace DanCook.Donnees
                     {
                         // Création d'une nouvelle ligne de résultats
                         var ligne = new List<string>();
-                        if (cmd.Label == CommandEnum.Get_Product)
+                        switch (cmd.Label)
                         {
-                            ligne.Add(rd["Id"].ToString());
-                            ligne.Add(rd["Name"].ToString());
-                            ligne.Add(rd["ListPrice"].ToString());
-                            ligne.Add(rd["SubCategoryName"].ToString());
-                            ligne.Add(rd["CategoryName"].ToString());
-                        }
-                        else if (cmd.Label == CommandEnum.Get_Category)
-                        {
-                            ligne.Add(rd["Id"].ToString());
-                            ligne.Add(rd["Name"].ToString());
-                        }
-                        else if (cmd.Label == CommandEnum.Get_Cart)
-                        {
-                            ligne.Add(rd["PanierNumero"].ToString());
-                            ligne.Add(rd["NomProduit"].ToString());
-                            ligne.Add(rd["Prix"].ToString());
-                            ligne.Add(rd["Quantite"].ToString());
-                        }
+                            case CommandEnum.Get_Product:
 
+                                ligne.Add(rd["Id"].ToString());
+                                ligne.Add(rd["Name"].ToString());
+                                ligne.Add(rd["ListPrice"].ToString());
+                                ligne.Add(rd["SubCategoryName"].ToString());
+                                ligne.Add(rd["CategoryName"].ToString());
+                                break;
+                            case CommandEnum.Get_Category:
+
+                                ligne.Add(rd["Id"].ToString());
+                                ligne.Add(rd["Name"].ToString());
+                                break;
+                            case CommandEnum.Get_Cart:
+                                if (cmd.Parameters.ContainsKey("Option") && cmd.Parameters["Option"].ToLower() == "total")
+                                {
+                                    ligne.Add(rd["Total"].ToString());
+                                }
+                                else
+                                {
+                                    ligne.Add(rd["PanierNumero"].ToString());
+                                    ligne.Add(rd["NomProduit"].ToString());
+                                    ligne.Add(rd["Prix"].ToString());
+                                    ligne.Add(rd["Quantite"].ToString());
+                                }
+                                break;
+                            case CommandEnum.Add_Cart:
+
+                                ligne.Add(rd["Id"].ToString());
+                                break;
+                        }
                         // Ajoute la ligne aux résultats de la commande
                         cmd.Result.Add(ligne);
                     }
