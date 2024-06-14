@@ -138,11 +138,12 @@ namespace DanCook.Donnees
                         }
                         lecture = true;
                     }
-                    else
+                    else 
                     {
-                        return -1; // Paramètre Id manquant
+                        sqlCmd.CommandText = $@"Select Id From Cart";
+                        lecture = true;
                     }
-                    break;
+                break;
 
                 default:
                     return -1;

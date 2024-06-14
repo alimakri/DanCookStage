@@ -44,10 +44,10 @@ CREATE TABLE [dbo].[SubCategory]
 /** Table Cart **/
 CREATE TABLE [dbo].[Cart]
 (
-	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Id] [int] NOT NULL,
 	[DateCommande] [datetime] NOT NULL,
-	[AdrLivraison] [nvarchar](max) NOT NULL,
-	[Tel] [nvarchar](max) NOT NULL,
+	[AdrLivraison] [nvarchar](max) NULL,
+	[Tel] [nvarchar](max) NULL,
 	CONSTRAINT [PK_Cart] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 
@@ -130,12 +130,12 @@ VALUES
 
 
 -- Insertion des commandes avec les détails de livraison et de contact
-INSERT INTO [dbo].[Cart] ([DateCommande], [AdrLivraison], [Tel])
+INSERT INTO [dbo].[Cart] (Id,[DateCommande], [AdrLivraison], [Tel])
 VALUES
-('2024-06-01 12:30:00', '10 Rue Georges Lyvet', '1234567890'),  -- Première commande
-('2024-06-02 15:45:00', '12 Rue Georges Lyvet', '2345678901'), -- Deuxième commande
-('2024-05-02 16:45:00', '10 Rue Georges Lyvet', '3456789012'), -- Troisième commande
-('2024-04-02 17:45:00', '11 Rue Georges Lyvet', '4567890123'); -- Quatrième commande
+(1,'2024-06-01 12:30:00', '10 Rue Georges Lyvet', '1234567890'),  -- Première commande
+(2,'2024-06-02 15:45:00', '12 Rue Georges Lyvet', '2345678901'), -- Deuxième commande
+(3,'2024-05-02 16:45:00', '10 Rue Georges Lyvet', '3456789012'), -- Troisième commande
+(4,'2024-04-02 17:45:00', '11 Rue Georges Lyvet', '4567890123'); -- Quatrième commande
 														   
 -- Insertion des produits qui vont être commandés
 INSERT INTO [dbo].[CartProduct] ([Cart], [Product], [Quantity], [Price])
