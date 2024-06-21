@@ -178,4 +178,19 @@ Select
 c.Id, c.Name 
 From Category c;
 
+
+	SELECT 
+    p.Id,
+    p.Name,
+    p.ListPrice,
+    p.SubCategory,
+    sc.Name AS SubCategoryName,
+    c.Name AS CategoryName
+FROM 
+    dbo.Product p
+LEFT JOIN 
+    dbo.SubCategory sc ON p.SubCategory = sc.Id
+LEFT JOIN 
+    dbo.Category c ON p.Category = c.Id;
+
 Use master	

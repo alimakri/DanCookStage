@@ -37,7 +37,7 @@ namespace DanCook.Donnees
                                             c.Name AS CategoryName
                                         FROM 
                                             dbo.Product p
-                                        INNER JOIN 
+                                        LEFT JOIN 
                                             dbo.SubCategory sc ON p.SubCategory = sc.Id
                                         INNER JOIN 
                                             dbo.Category c ON p.Category = c.Id";

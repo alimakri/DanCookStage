@@ -5,16 +5,26 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace DanCookWeb.Controllers
+namespace DanCook.Web.Controllers
 {
     public class ProductController : Controller
     {
         // GET: ProductController
         // Action pour lister tous les produits
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
+            CommandLine cmd;
             // Crée une commande pour obtenir tous les produits
-            var cmd = new CommandLine("Get_Product");
+            if (id == 0)
+            {
+                 cmd = new CommandLine($"Get-Product");
+
+            }
+            else
+            {
+                cmd = new CommandLine($"Get-Product -Category {id}");
+
+            }
 
             // Exécute la commande en utilisant la couche de données
             Data.Execute(cmd);
@@ -37,7 +47,10 @@ namespace DanCookWeb.Controllers
             }
 
             // Passe la liste des produits à la vue
-            return View(products);
+            var data = products;
+            var html = View(data); // C'est le 4 et le 5
+            return html; // C'est le 6
+            //return View(products); 
         }
 
         // GET: ProductController/Details/5

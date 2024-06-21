@@ -1,0 +1,31 @@
+﻿@model IEnumerable<DanCook.Web.Controllers.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Liste des produits";
+}
+
+<h2>Product List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>List Price</th>
+            <th>Category</th>
+            <th>SubCategory</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.ListPrice</td>
+                <td>@product.Category</td>
+                <td>@product.SubCategory</td>
+            </tr>
+        }
+    </tbody>
+</table>
